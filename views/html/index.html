@@ -13,17 +13,37 @@
 		{{ .title }}
 	</h1>
 	<hr>
+	
+	<h1>/dev/sda</h1>
 	<div class="grid-container">
 		<div class="grid-item">
-			<h2>sdaTemp: {{ .sdaTemp }}°C</h2>
+			<h2>Temperature: {{ .sdaTemp }}°C</h2>
+		</div>
+		
+		<div class="grid-item">
+			<h2>Usage: {{ .sdaUsed }}GB / {{ .sdaTotal }}GB</h2>
+		</div>
+	</div>
+
+	<h1>/dev/sdb</h1>
+	<div class="grid-container">
+		<div class="grid-item">
+			<h2>Temperature: {{ .sdbTemp }}°C</h2>
+		</div>
+	
+		<div class="grid-item">
+			<h2>Usage: {{ .sdbUsed }}GB / {{ .sdbTotal }} GB</h2>
+		</div>
+	</div>
+	
+	<h1>/dev/sdc</h1>
+	<div class="grid-container">
+		<div class="grid-item">
+			<h2>Temperature: {{ .sdcTemp }}°C</h2>
 		</div>
 
 		<div class="grid-item">
-			<h2>sdbTemp: {{ .sdbTemp }}°C</h2>
-		</div>
-
-		<div class="grid-item">
-			<h2>sdcTemp: {{ .sdcTemp }}°C</h2>
+			<h2>Usage: {{ .sdcUsed }}GB / {{ .sdcTotal }} GB</h2>
 		</div>
 	</div>
 </body>
