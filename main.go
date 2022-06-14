@@ -7,8 +7,8 @@ import (
 	"strings"
 	"bufio"
 	"github.com/gin-gonic/gin"
+	Mount "k8s.io/mount-utils"
 	"strconv"
-	"unicode/utf8"
 	"syscall"
 	"math"
 )
@@ -35,19 +35,23 @@ const (
 
 
 func main() {
+	mount1 := "/mnt/ssd_wind/"
+	mount2 := "/mnt/2tb_linux/"
+	mount3 := "/mnt/2tb_wind/"
+
 	router := gin.Default()
 	router.Static("/static", "./views")
 	router.LoadHTMLGlob("views/html/*")
 	router.GET("/", func(c *gin.Context) {
-		sda := DiskUsage("/mnt/ssd_wind/")
-		sdb := DiskUsage("/mnt/2tb_linux/")
-		sdc := DiskUsage("/mnt/2tb_wind/")
+		sda := DiskUsage(mount1)
+		sdb := DiskUsage(mount2)
+		sdc := DiskUsage(mount3)
 
 		c.HTML(http.StatusOK, "index.html", gin.H {
 			"title": "Dashboard",
-			"sdaTemp": Temp("/dev/sda"),
-			"sdbTemp": Temp("/dev/sdb"),
-			"sdcTemp": Temp("/dev/sdc"),
+			"sdaTemp": Temp(DeviceFromMount(mount1)),
+			"sdbTemp": Temp(DeviceFromMount(mount2)),
+			"sdcTemp": Temp(DeviceFromMount(mount3)),
 			"sdaUsed": (math.Round((float64(sda.Used)/float64(GB)) * 100) / 100),
 			"sdbUsed": (math.Round((float64(sdb.Used)/float64(GB)) * 100) / 100),
 			"sdcUsed": (math.Round((float64(sdc.Used)/float64(GB)) * 100) / 100),
@@ -74,7 +78,7 @@ func Temp(drive string) int {
 	}
 
 	reply, err := bufio.NewReader(c).ReadString('\n')
-	status := Trim(reply)
+	status := TrimFirst(reply)
 	s := strings.Split(status, "||")
 	t := 0
 	for _, j := range s {
@@ -87,9 +91,12 @@ func Temp(drive string) int {
 	return t
 }
 
-func Trim(s string) string {
-	_, i := utf8.DecodeRuneInString(s)
-	return s[i:]
+func TrimFirst(s string) string {
+	return s[1:]
+}
+
+func TrimLast(s string) string {
+	return s[:len(s)-1]
 }
 
 func DiskUsage(path string) (disk DiskStatus) {
@@ -103,5 +110,16 @@ func DiskUsage(path string) (disk DiskStatus) {
 	disk.Total = fs.Blocks * uint64(fs.Bsize)
 	disk.Free = fs.Bfree * uint64(fs.Bsize)
 	disk.Used = disk.Total - disk.Free
+	return
+}
+
+func DeviceFromMount(path string) (device string) {
+	interf := Mount.New("/bin/mount")
+	device, _, err := Mount.GetDeviceNameFromMount(interf, path)
+	device = TrimLast(device)
+	if err != nil {
+		device := "Error finding device from mountpoint: " + err.Error()
+		fmt.Println(device)
+	}
 	return
 }
