@@ -27,13 +27,6 @@ const (
 )
 
 
-/*
- * TODO:	add config tab on main page where user can pick 
- *			a mounted folder, using https://pkg.go.dev/k8s.io/kubernetes/pkg/util/mount
- *			to find device names for the thermals
- */
-
-
 func main() {
 	mount1 := "/mnt/ssd_wind/"
 	mount2 := "/mnt/2tb_linux/"
