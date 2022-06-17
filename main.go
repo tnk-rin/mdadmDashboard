@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"syscall"
 	"math"
+	"os/exec"
 )
 
 type DiskStatus struct {
@@ -31,6 +32,8 @@ func main() {
 	mount1 := "/mnt/ssd_wind/"
 	mount2 := "/mnt/2tb_linux/"
 	mount3 := "/mnt/2tb_wind/"
+
+	GetMdadmDetails("/dev/md127")
 
 	router := gin.Default()
 	router.Static("/static", "./views")
