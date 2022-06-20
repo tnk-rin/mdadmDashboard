@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"syscall"
 	"math"
-	"os/exec"
 )
 
 type DiskStatus struct {
@@ -25,6 +24,7 @@ const (
 	KB = 1024
 	MB = KB * KB
 	GB = MB * KB
+	TB = GB * KB
 )
 
 
@@ -32,8 +32,6 @@ func main() {
 	mount1 := "/mnt/ssd_wind/"
 	mount2 := "/mnt/2tb_linux/"
 	mount3 := "/mnt/2tb_wind/"
-
-	GetMdadmDetails("/dev/md127")
 
 	router := gin.Default()
 	router.Static("/static", "./views")
@@ -48,12 +46,12 @@ func main() {
 			"sdaTemp": Temp(DeviceFromMount(mount1)),
 			"sdbTemp": Temp(DeviceFromMount(mount2)),
 			"sdcTemp": Temp(DeviceFromMount(mount3)),
-			"sdaUsed": (math.Round((float64(sda.Used)/float64(GB)) * 100) / 100),
-			"sdbUsed": (math.Round((float64(sdb.Used)/float64(GB)) * 100) / 100),
-			"sdcUsed": (math.Round((float64(sdc.Used)/float64(GB)) * 100) / 100),
-			"sdaTotal": (math.Round((float64(sda.Total)/float64(GB)) * 100) / 100),
-			"sdbTotal": (math.Round((float64(sdb.Total)/float64(GB)) * 100) / 100),
-			"sdcTotal": (math.Round((float64(sdc.Total)/float64(GB)) * 100) / 100),
+			"sdaUsed": (math.Round((float64(sda.Used)/float64(TB)) * 100) / 100),
+			"sdbUsed": (math.Round((float64(sdb.Used)/float64(TB)) * 100) / 100),
+			"sdcUsed": (math.Round((float64(sdc.Used)/float64(TB)) * 100) / 100),
+			"sdaTotal": (math.Round((float64(sda.Total)/float64(TB)) * 100) / 100),
+			"sdbTotal": (math.Round((float64(sdb.Total)/float64(TB)) * 100) / 100),
+			"sdcTotal": (math.Round((float64(sdc.Total)/float64(TB)) * 100) / 100),
 
 		})
 	})

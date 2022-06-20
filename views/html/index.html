@@ -36,7 +36,7 @@
 					</div>
 				</div>
 			</div>
-			<h2>Usage: {{ .sdaUsed }}GB / {{ .sdaTotal }}GB</h2>
+			<h2>Usage: {{ .sdaUsed }}TB / {{ .sdaTotal }}TB</h2>
 		</div>
 	</div>
 
@@ -47,7 +47,19 @@
 		</div>
 	
 		<div class="grid-item">
-			<h2>Usage: {{ .sdbUsed }}GB / {{ .sdbTotal }} GB</h2>
+			<div class="circular">
+				<div class="inner"></div>
+				<div class="number">75%</div>
+				<div class="circle">
+					<div class="bar left">
+						<div class="progress"></div>
+					</div>
+					<div class="bar right">
+						<div class="progress"></div>
+					</div>
+				</div>
+			</div>
+			<h2>Usage: {{ .sdbUsed }}TB / {{ .sdbTotal }} TB</h2>
 		</div>
 	</div>
 	
@@ -58,7 +70,19 @@
 		</div>
 
 		<div class="grid-item">
-				<h2>Usage: {{ .sdcUsed }}GB / {{ .sdcTotal }} GB</h2>
+			<div class="circular">
+				<div class="inner"></div>
+				<div class="number">100%</div>
+				<div class="circle">
+					<div class="bar left">
+						<div class="progress"></div>
+					</div>
+					<div class="bar right">
+						<div class="progress"></div>
+					</div>
+				</div>
+			</div>
+				<h2>Usage: {{ .sdcUsed }}TB / {{ .sdcTotal }} TB</h2>
 		</div>
 	</div>
 </body>
